@@ -11,11 +11,11 @@
 #include <Encoder.h>
 #include <SimpleKalmanFilter.h>
 
-class Motor
+class SMotor
 {
   public:
   
-  Motor(int INa, int INb, int EN, int A, int B);   //Constructor - các tham số lần lượt là chân IN1, IN2,
+  SMotor(int INa, int INb, int EN, int A, int B);   //Constructor - các tham số lần lượt là chân IN1, IN2,
                                                    //ENABLE của module L298; kênh A, kênh B của encoder
 
   void stop(void);                                 //Dừng motor

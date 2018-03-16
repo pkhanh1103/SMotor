@@ -7,7 +7,7 @@
 #include "Arduino.h"
 #include "SMotor.h"
 
-Motor::Motor(int INa, int INb, int EN, int A, int B):
+SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   myEnc(A, B),
   myPID(&speed, &_pwm, &_speedSet, 7.00, 10.00, 0.05, DIRECT),   //Đặt tham số PID
   myFilter(0.05, 0.05, 0.005) //Lọc nhiễu Kalman
@@ -43,7 +43,7 @@ Motor::Motor(int INa, int INb, int EN, int A, int B):
   lastCheck = millis();
 }*/
 
-void Motor::spin(bool direction, double speedSet)
+void SMotor::spin(bool direction, double speedSet)
 {
   _speedSet = speedSet;
   _now = millis();
@@ -79,7 +79,7 @@ void Motor::spin(bool direction, double speedSet)
   analogWrite(_EN, _pwm);
 }
 
-void Motor::stop(void)
+void SMotor::stop(void)
 {
   //Cung cấp đồng thời một mức điện áp vào hai cực của motor
   //tạo thành lực hãm điện từ, giảm ảnh hưởng của quán tính
