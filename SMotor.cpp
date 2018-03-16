@@ -7,10 +7,14 @@
 #include "Arduino.h"
 #include "SMotor.h"
 
+//Lưu ý: Không thay đổi các comment này!
+//Tham số PID ổn định: kp = 7, ki = 10, kd = 0.02
+//Tham số Kalman ổn định: 0.5, 0.5, 1
+
 SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   myEnc(A, B),
-  myPID(&speed, &pwm, &_speedSet, 7.00, 10.00, 0.05, DIRECT),   //Đặt tham số PID
-  myFilter(0.05, 0.05, 0.005) //Lọc nhiễu Kalman
+  myPID(&speed, &pwm, &_speedSet, 7.00, 10.00, 0.02, DIRECT),   //Đặt tham số PID
+  myFilter(0.5, 0.5, 1)   //Đặt tham số bộ lọc nhiễu Kalman
 {
   _INa = INa;   //Chân IN1 của module L298 - điều khiển cực dương của motor
   _INb = INb;   //Chân IN1 của module L298 - điều khiển cực âm của motor
@@ -18,21 +22,18 @@ SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   _A = A;       //Kênh A của encoder gắn với motor
   _B = B;       //Kênh B của encoder gắn với motor
 
-  //Setup các chân
   pinMode(_INa, OUTPUT);
   pinMode(_INb, OUTPUT);
   pinMode(_EN, OUTPUT);
-
-  //Setup PID
-  myPID.SetMode(AUTOMATIC);  //Khởi động PID
   
-  //Reset thông số
-  speed = 0;
-  pwm = 0;
-  _speedSet = 0;
-  _oldPosition = 0;
-  _newPosition = 0;  
+  //Reset thông số 
+  _now = millis();
   _lastCheck = millis();
+  _sampleRate = 10;
+  
+  //Khởi động PID
+  myPID.SetMode(AUTOMATIC);
+  myPID.SetSampleTime(_sampleRate);
 }
 
 void SMotor::pidSet(double kp, double ki, double kd, int sampleRate)
@@ -40,8 +41,6 @@ void SMotor::pidSet(double kp, double ki, double kd, int sampleRate)
   _sampleRate = sampleRate;
   myPID.SetTunings(kp, ki, kd);
   myPID.SetSampleTime(_sampleRate);
-  _now = millis();
-  _lastCheck = millis();
 }
 
 void SMotor::spin(bool direction, double speedSet)

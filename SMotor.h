@@ -24,9 +24,9 @@ class SMotor
                                                     //theo tốc độ mong muốn(RPM - vòng/phút). Hàm này thực  
                                                     //hiện PID và nên được gọi trong một vòng lặp
   
+  /* ----- PID ----- */
   double speed;         //Tốc độ motor đo được theo đơn vị RPM
   double pwm;           //Xung PWM ghi vào chân ENABLE của module L298
-
   void pidSet(double kp, double ki, double kd, int sampleRate);  //Đặt tham số cho thuật toán PID
 
   private:
