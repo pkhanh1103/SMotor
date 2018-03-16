@@ -52,7 +52,7 @@ void loop()
   if(now - lastCheck < 2000)
   {
     Motor1.spin(true, speed);
-    Motor2.spin(true, speed);
+    Motor2.spin(false, speed);
   }
   else if(now - lastCheck <= 2500)
   {
@@ -61,8 +61,8 @@ void loop()
   }
   else if(now - lastCheck <= 4500)
   {
-    Motor1.spin(true, speed);
-    Motor2.spin(false, speed);
+    Motor1.spin(false, speed);
+    Motor2.spin(true, speed);
     lastCheck = now;
   }
 }

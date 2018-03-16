@@ -16,15 +16,18 @@ class SMotor
   public:
   
   SMotor(int INa, int INb, int EN, int A, int B);   //Constructor - các tham số lần lượt là chân IN1, IN2,
-                                                   //ENABLE của module L298; kênh A, kênh B của encoder
+                                                    //ENABLE của module L298; kênh A, kênh B của encoder
 
-  void stop(void);                                 //Dừng motor
+  void stop(void);                                  //Dừng motor
   
-  void spin(bool direction, double speedSet);      //Quay motor theo chiều thuận (true) hay nghịch (false)
-                                                   //theo tốc độ mong muốn(RPM - vòng/phút). Hàm này thực  
-                                                   //hiện PID và nên được gọi trong một vòng lặp
+  void spin(bool direction, double speedSet);       //Quay motor theo chiều thuận (true) hay nghịch (false)
+                                                    //theo tốc độ mong muốn(RPM - vòng/phút). Hàm này thực  
+                                                    //hiện PID và nên được gọi trong một vòng lặp
   
-  double speed;                                    //Tốc độ motor đo được theo đơn vị RPM
+  double speed;         //Tốc độ motor đo được theo đơn vị RPM
+  double pwm;           //Xung PWM ghi vào chân ENABLE của module L298
+
+  void pidSet(double kp, double ki, double kd, int sampleRate);  //Đặt tham số cho thuật toán PID
 
   private:
 
@@ -38,14 +41,13 @@ class SMotor
   /* ----- PID ------ */
   int _sampleRate;         //Chu kì lấy mẫu tốc độ motor (mặc định: 10 milli giây)
   double _speedSet;        //Tốc độ motor mong muốn (RPM)
-  double _pwm;             //Xung PWM ghi vào chân ENABLE của module L298
   
   unsigned long _now;          //Mốc thời gian hiện tại
   unsigned long _lastCheck;    //Mốc thời gian tại lần cuối tốc độ motor được đo
   long _oldPosition;           //Vị trí cũ mà encoder đo được
   long _newPosition;           //Vị trí mới mà encoder đo được
 
-  void pidSet(double kp, double ki, double kd, int _sampleRate);  //Đặt tham số cho thuật toán PID
+  
   
   /* ----- Các đối tượng tạo từ các thư viện ngoài ----- */
   Encoder myEnc;                  //Đối tượng đọc tín hiệu encoder

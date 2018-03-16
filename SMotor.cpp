@@ -9,7 +9,7 @@
 
 SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   myEnc(A, B),
-  myPID(&speed, &_pwm, &_speedSet, 7.00, 10.00, 0.05, DIRECT),   //Đặt tham số PID
+  myPID(&speed, &pwm, &_speedSet, 7.00, 10.00, 0.05, DIRECT),   //Đặt tham số PID
   myFilter(0.05, 0.05, 0.005) //Lọc nhiễu Kalman
 {
   _INa = INa;   //Chân IN1 của module L298 - điều khiển cực dương của motor
@@ -28,20 +28,21 @@ SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   
   //Reset thông số
   speed = 0;
-  _pwm = 0;
+  pwm = 0;
   _speedSet = 0;
   _oldPosition = 0;
   _newPosition = 0;  
+  _lastCheck = millis();
 }
 
-/*void Motor::pidSet(double kp, double ki, double kd, int _sampleRate)
+void SMotor::pidSet(double kp, double ki, double kd, int sampleRate)
 {
-  sampleRate = _sampleRate;
+  _sampleRate = sampleRate;
   myPID.SetTunings(kp, ki, kd);
-  myPID.SetSampleTime(sampleRate);
-  now = millis();
-  lastCheck = millis();
-}*/
+  myPID.SetSampleTime(_sampleRate);
+  _now = millis();
+  _lastCheck = millis();
+}
 
 void SMotor::spin(bool direction, double speedSet)
 {
@@ -76,7 +77,7 @@ void SMotor::spin(bool direction, double speedSet)
   }
 
   myPID.Compute();
-  analogWrite(_EN, _pwm);
+  analogWrite(_EN, pwm);
 }
 
 void SMotor::stop(void)
