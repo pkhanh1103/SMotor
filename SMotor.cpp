@@ -50,10 +50,7 @@ void SMotor::spin(bool direction, double speedSet)
 
   if (_speedSet == 0)
   {
-    digitalWrite(_INa, 0);
-    digitalWrite(_INb, 0);
-    analogWrite(_EN, 255);
-    speed = 0;
+    stop();
     return;
   }
   if (direction == true)
@@ -89,7 +86,7 @@ void SMotor::stop(void)
   digitalWrite(_INb, 0);
   
   //Tăng cường độ dòng điện nhằm tăng cường độ lực hãm
-  analogWrite(_EN, 255);
+  digitalWrite(_EN, 1);
 
   speed = 0;
 }
