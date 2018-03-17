@@ -8,12 +8,12 @@
 #include "SMotor.h"
 
 //Lưu ý: Không thay đổi các comment này!
-//Tham số PID ổn định: kp = 7, ki = 10, kd = 0.02
+//Tham số PID ổn định: kp = 7, ki = 10, kd = 0.02, sampleRate = 7
 //Tham số Kalman ổn định: 0.5, 0.5, 1
 
 SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   myEnc(A, B),
-  myPID(&speed, &pwm, &_speedSet, 7.00, 10.00, 0.02, DIRECT),   //Đặt tham số PID
+  myPID(&speed, &pwm, &_speedSet, 7.00, 12.00, 0.02, DIRECT),   //Đặt tham số PID
   myFilter(0.5, 0.5, 1)   //Đặt tham số bộ lọc nhiễu Kalman
 {
   _INa = INa;   //Chân IN1 của module L298 - điều khiển cực dương của motor
@@ -29,7 +29,7 @@ SMotor::SMotor(int INa, int INb, int EN, int A, int B):
   //Reset thông số 
   _now = millis();
   _lastCheck = millis();
-  _sampleRate = 10;
+  _sampleRate = 7;
   
   //Khởi động PID
   myPID.SetMode(AUTOMATIC);
