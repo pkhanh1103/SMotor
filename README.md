@@ -1,34 +1,33 @@
 SMotor
 ========================================
 
-Đây là thư viện giúp ổn định tốc độ motor của robot đa hướng trong SRobot 2018.
+This is a library for stabilizing motor speed, using in the SRobot contest, 2018.
 
-Các thư viện bổ trợ (bắt buộc)
+Required Additional Libraries
 --------------------
-Để thư viện này có thể hoạt động, cài đặt thêm các thư viện sau:
-* **[Thư viện PID](http://playground.arduino.cc/Code/PIDLibrary)** của Brett Beauregard
-* **[Thư viện Encoder](https://www.pjrc.com/teensy/td_libs_Encoder.html)** của Teensy
-* **[Thư viện SimpleKalmanFilter](https://github.com/denyssene/SimpleKalmanFilter)** của denyssene
+* **[Arduino PID Library](https://github.com/br3ttb/Arduino-PID-Library/)**
+* **[Encoder Library](https://github.com/PaulStoffregen/Encoder)**
+* **[SimpleKalmanFilter](https://github.com/denyssene/SimpleKalmanFilter)**
 
-Các phần của thư viện
+Repository Contents
 --------------------
-* **/examples** - Các sketch mẫu của thư viện (.ino).
-* **/src** - Mã nguồn thư viện.
-* **keywords.txt** - Các keyword của thư viện được highlight trong Arduino IDE.
-* **extra_library_backup.zip** - Các thư viện bổ trợ dự phòng, trong trường hợp các liên kết trên không còn khả dụng.
+* **/examples** - Example sketches for the library (.ino). Run these from the Arduino IDE.
+* **/src** - Source files for the library (.cpp, .h).
+* **keywords.txt** - Keywords from this library that will be highlighted in the Arduino IDE.
 
-
-Hướng dẫn sử dụng cơ bản
+Basic Usage
 --------------------
-* Khởi tạo một đối tượng (object) motor:
+* Initialize a `Motor` object:
 ```c++
 SMotor Motor(int INa, int INb, int EN, int A, int B);
 ```
-Các tham số lần lượt là chân IN1, IN2, ENABLE của module L298; kênh A, kênh B của encoder
-* Hàm stop(): dừng motor
-* Hàm spin(bool direction, double speedSet): Quay motor theo chiều thuận (true) hay nghịch (false) theo tốc độ mong muốn (đơn vị: RPM). Hàm này thực hiện PID và *phải được gọi trong một vòng lặp*
+* `IN1`, `IN2`, `ENABLE`: corresponding pins in module L298
+* `A`, `B`: motor encoder pins
 
+Functions:
+* `stop()`: stop the motor
+* `spin(bool direction, double speedSet)`: Spin in the forward (true) or backward (false) direction in the expected speed (RPM). This function implements PID and *shall be called in a loop*
 
-Lịch sử các phiên bản
+Version History
 --------------------
-* v0.2 - 16/03/2018: Đơn giản hóa các hàm, thêm tính năng hãm điện từ cho motor
+* v0.2 - 16/03/2018: Simplifying functions, adding electromagnetic brake functionality.
